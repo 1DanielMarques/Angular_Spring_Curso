@@ -1,6 +1,5 @@
 package com.daniel.crudspring.model;
 
-import org.hibernate.type.TrueFalseConverter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
