@@ -1,9 +1,13 @@
 package com.daniel.crudspring.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +27,14 @@ public class CourseController {
     private final ICourseRepository repository;
 
     @GetMapping
-    public List<Course> findAll() {
-        return repository.findAll();
+    public ResponseEntity<List<Course>> findAll() {
+        List<Course> list = repository.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Course> findById(@PathVariable Long id) {
+        return repository.findById(id).map(c -> ResponseEntity.ok().body(c)).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
