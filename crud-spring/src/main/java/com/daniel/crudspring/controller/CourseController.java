@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -41,6 +42,17 @@ public class CourseController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public Course create(@RequestBody Course c) {
         return repository.save(c);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course course) {
+        return repository.findById(id).map(c -> {
+            c.setName(course.getName());
+            c.setCategory(course.getCategory());
+            Course updated = repository.save(c);
+            return ResponseEntity.ok().body(updated);
+        }).orElse(ResponseEntity.notFound().build());
+
     }
 
 }
