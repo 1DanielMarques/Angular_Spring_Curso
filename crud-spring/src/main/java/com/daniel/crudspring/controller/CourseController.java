@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +52,14 @@ public class CourseController {
             c.setCategory(course.getCategory());
             Course updated = repository.save(c);
             return ResponseEntity.ok().body(updated);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        return repository.findById(id).map(c -> {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().<Void>build();
         }).orElse(ResponseEntity.notFound().build());
 
     }
