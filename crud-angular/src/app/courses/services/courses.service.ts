@@ -38,4 +38,8 @@ export class CoursesService {
   private update(course: Partial<Course>) {
     return this.httpClient.put<Course>(`${this.API}/${course._id}`, course);
   }
+
+  public delete(id: string) {
+    return this.httpClient.delete(`${this.API}/${id}`);
+  }
 }
